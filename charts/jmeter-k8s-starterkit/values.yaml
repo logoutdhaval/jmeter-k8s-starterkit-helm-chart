@@ -20,6 +20,15 @@ cleaner:
   schedule: "*/1 * * * *"
   successfulJobsHistoryLimit: 1
 
+jmeterwiremock:
+  ingress:
+    enabled: true
+    hostname: "wiremock-jmeter.sandbox.fynarfin.io"
+    path: "/"
+    wildcardhostname: "*.sandbox.fynarfin.io"
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+
 # Grafana instance with built-in dashboards and datasources
 grafana:
   # Deloyement options
@@ -35,6 +44,13 @@ grafana:
     limits:
       memory: "512Mi"
       cpu: "512m"
+  ingress:
+    enabled: true
+    hostname: "grafana-jmeter.sandbox.fynarfin.io"
+    path: "/"
+    wildcardhostname: "*.sandbox.fynarfin.io"
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
   
   # Storage options
   persistence:
@@ -93,12 +109,12 @@ jmeter:
         memory: "512Mi"
         cpu: "128m"
       limits:
-        memory: "2048Mi"
-        cpu: "2048m"
+        memory: "1024Mi"
+        cpu: "1024m"
 
     persistence:
       enabled: true
-      capacity: 5Gi
+      capacity: 1Gi
       accessMode: ReadWriteOnce
   
   slave:
@@ -110,11 +126,11 @@ jmeter:
         stopTest: 4445
     resources:
       requests:
-        memory: "1024Mi"
-        cpu: "1024m"
+        memory: "256Mi"
+        cpu: "200m"
       limits:
-        memory: "1024Mi"
-        cpu: "1024m"
+        memory: "512Mi"
+        cpu: "512m"
     
 
 
@@ -129,7 +145,7 @@ demo:
       memory: "64Mi"
       cpu: "128m"
     limits:
-      memory: "1024Mi"
+      memory: "512Mi"
       cpu: "1024m"
   service:
     port: 8080
@@ -171,10 +187,10 @@ wiremock:
   monitoring: true
   resources:
     requests:
-      memory: "1024Mi"
-      cpu: "1024m"
+      memory: "128Mi"
+      cpu: "100m"
     limits:
-      memory: "1024Mi"
-      cpu: "1024m"
+      memory: "256Mi"
+      cpu: "200m"
   service:
     port: 8080

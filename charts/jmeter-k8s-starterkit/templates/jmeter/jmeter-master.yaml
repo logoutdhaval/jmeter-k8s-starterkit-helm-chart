@@ -74,13 +74,26 @@ spec:
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
+      initContainers:
+{{/*      - name: make-directory-writable*/}}
+{{/*        image: busybox*/}}
+{{/*        command: [ "/bin/sh", "-c", "chmod 777 /tmp" ]*/}}
+      - name: download-jar
+        image: busybox
+        command: [ "/bin/sh", "-c", "cd /etc/wiremock && wget -O wiremock-standalone-3.0.4.jar https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.0.4/wiremock-standalone-3.0.4.jar && echo downloaded" ]
+        volumeMounts:
+          - mountPath: /etc/wiremock
+            name: jmeter-data-dir
+{{/*      - name: init-myservice*/}}
+{{/*        image: busybox:1.28*/}}
+{{/*        command: ['sh', '-c', 'cd /sys && wget https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.0.4/wiremock-standalone-3.0.4.jar && echo downloaded']*/}}
       containers:
       - name: jmmaster
         image: {{ .Values.jmeter.image }}
         imagePullPolicy: Always
         {{ if .Values.jmeter.master.persistence.enabled }}
         volumeMounts:
-            - mountPath: /report
+            - mountPath: /etc/wiremock
               name: jmeter-data-dir
         {{ end }}
         env:

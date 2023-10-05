@@ -16,5 +16,8 @@ spec:
   - port: {{ .Values.jmeter.slave.service.ports.stopTest }}
     name: stoptest
     targetPort: 4445
+  - port: 8080
+    name: wiremock
+    targetPort: 8080
   selector:
     jmeter_mode: slave
